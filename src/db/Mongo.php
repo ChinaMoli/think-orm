@@ -486,7 +486,9 @@ class Mongo extends BaseQuery
     public function order($field, string $order = '')
     {
         if (is_array($field)) {
-            $this->options['sort'] = $field;
+            $this->options['sort'] = array_map(function ($val) {
+                return 'asc' == strtolower($val) ? 1 : -1;
+            }, $field);
         } else {
             $this->options['sort'][$field] = 'asc' == strtolower($order) ? 1 : -1;
         }
